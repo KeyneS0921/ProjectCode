@@ -1,0 +1,70 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:15-alpine
+    container_name: tabletap_postgres
+    environment:
+      POSTGRES_DB: tabletap_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres123
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    networks:
+      - tabletap_network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  web:
+    build: .
+    container_name: tabletap_web
+    command: >
+      sh -c "python manage.py migrate &&
+             python manage.py collectstatic --noinput &&
+             gunicorn --bind 0.0.0.0:8000 --workers 3 TableTap.wsgi:application"
+    environment:
+      SECRET_KEY: django-insecure-docker-dev-key-change-in-production
+      DEBUG: "False"
+      ALLOWED_HOSTS: localhost,127.0.0.1
+      DB_ENGINE: postgresql
+      DB_NAME: tabletap_db
+      DB_USER: postgres
+      DB_PASSWORD: postgres123
+      DB_HOST: postgres
+      DB_PORT: 5432
+    volumes:
+      - .:/app
+      - static_volume:/app/staticfiles
+    ports:
+      - "8000:8000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - tabletap_network
+
+  nginx:
+    image: nginx:alpine
+    container_name: tabletap_nginx
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+      - static_volume:/app/staticfiles:ro
+    ports:
+      - "80:80"
+    depends_on:
+      - web
+    networks:
+      - tabletap_network
+
+volumes:
+  postgres_data:
+  static_volume:
+
+networks:
+  tabletap_network:
+    driver: bridge

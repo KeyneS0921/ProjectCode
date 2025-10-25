@@ -1,0 +1,33 @@
+/* success.css - TableTap order success page specific styles */
+
+/* Center success content vertically and horizontally */
+body {
+    background-color: #eafae1; /* Light greenish background */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+}
+
+/* Success message container */
+.success-container {
+    max-width: 400px;
+    padding: 30px;
+    background-color: white;
+    border-radius: 20px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+/* Large success icon style */
+.icon-circle {
+    font-size: 4rem;
+    color: green;
+}
+
+/* Floating feedback link button */
+.feedback-link {
+    position: fixed;
+    bottom: 80px;
+    right: 20px;
+    z-index: 1000;
+}

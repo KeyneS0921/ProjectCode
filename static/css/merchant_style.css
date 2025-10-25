@@ -1,0 +1,6 @@
+/* merchant_style.css - TableTap merchant dashboard page specific styles */
+
+/* Limit container width for better readability on large screens */
+.container {
+    max-width: 900px;
+}

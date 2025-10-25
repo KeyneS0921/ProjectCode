@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Your Cart{% endblock %}
+{% block navbar_title %}TableTap - Cart{% endblock %}
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/cart.css' %}">
+{% endblock %}
+
+{% block content %}
+<h4 class="fw-bold mb-4">Your Order for Table {{ table.table_number }}</h4>
+
+{% if items %}
+<!-- Order items list -->
+<div class="list-group mb-4">
+  {% for item in items %}
+  <div class="list-group-item d-flex justify-content-between align-items-center">
+    <div>
+      <div class="fw-bold">{{ item.item.name }}</div>
+      <small class="text-muted">${{ item.item.price }} × {{ item.quantity }}</small>
+    </div>
+    <div class="d-flex align-items-center">
+      <span class="fw-bold me-3">${{ item.item.price|floatformat:2|add:"0"|floatformat }}</span>
+      <form action="{% url 'decrease-item' table.id item.item.id %}" method="post" class="me-2">
+        {% csrf_token %}
+        <button class="btn btn-sm btn-outline-danger">−</button>
+      </form>
+      <form action="{% url 'place-order' table.id item.item.id %}" method="post">
+        {% csrf_token %}
+        <button class="btn btn-sm btn-outline-success">＋</button>
+      </form>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+
+<!-- Total -->
+<div class="d-flex justify-content-between align-items-center mb-5">
+  <h5 class="mb-0 fw-bold">Total</h5>
+  <h5 class="mb-0 fw-bold">${{ total_price|floatformat:2 }}</h5>
+</div>
+
+<!-- Footer action -->
+<footer class="footer-cart d-flex justify-content-between align-items-center px-4 py-2 bg-light border-top">
+  <div class="fw-bold fs-5">Total: ${{ total_price|floatformat:2 }}</div>
+  <a href="{% url 'order-success' %}" class="btn btn-success">Confirm Order</a>
+</footer>
+
+{% else %}
+<p class="text-muted">Your cart is empty.</p>
+<a href="{% url 'table-menu' table.id %}" class="btn btn-outline-primary">Back to Menu</a>
+{% endif %}
+{% endblock %}

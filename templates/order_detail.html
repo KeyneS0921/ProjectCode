@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Order #{{ order.id }}{% endblock %}
+{% block navbar_title %}TableTap - Order #{{ order.id }}{% endblock %}
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/cart.css' %}">
+{% endblock %}
+
+{% block content %}
+<h4 class="fw-bold mb-4">Table {{ order.table.table_number }}'s Order</h4>
+
+<!-- Order items list -->
+<div class="list-group mb-4">
+  {% for item in items %}
+  <div class="list-group-item d-flex justify-content-between align-items-center">
+    <div>
+      <div class="fw-bold">{{ item.item.name }}</div>
+      <small class="text-muted">${{ item.item.price }} × {{ item.quantity }}</small>
+    </div>
+    <div class="fw-bold">
+      ${{ item.item.price|floatformat:2|add:"0"|floatformat:2 }}
+    </div>
+  </div>
+  {% endfor %}
+</div>
+
+<!-- Order Summary -->
+<div class="d-flex justify-content-between align-items-center mb-5">
+  <h5 class="mb-0 fw-bold">Status</h5>
+  <h5 class="mb-0 fw-bold">{{ order.status }}</h5>
+</div>
+
+<!-- Mark as Completed -->
+{% if order.status != 'COMPLETED' %}
+<div class="text-center mb-4">
+  <a href="{% url 'complete-order' order.id %}" class="btn btn-success px-4 py-2">Mark as Completed</a>
+</div>
+{% endif %}
+
+<!-- Back Button -->
+<div class="text-center mt-4">
+  <a href="{% url 'merchant-dashboard' %}" class="btn btn-secondary">Back to Dashboard</a>
+</div>
+{% endblock %}

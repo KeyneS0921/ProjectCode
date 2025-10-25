@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Order Successful{% endblock %}
+{% block navbar_title %}TableTap - Order Successful{% endblock %}
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/success.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="success-container text-center">
+  <div class="icon-circle mb-4">
+    ✅
+  </div>
+  <h2 class="fw-bold mb-3">Order Placed Successfully!</h2>
+  <p class="text-muted mb-4">Your order has been sent to the kitchen. We're preparing your meal 😋</p>
+  <a href="{% url 'table-menu' table_id %}" class="btn btn-success">Back to Menu</a>
+</div>
+
+<!-- Feedback button -->
+<div class="feedback-link text-center mt-4">
+  <a href="{% url 'feedback' %}" class="btn btn-outline-success">Give Feedback</a>
+</div>
+{% endblock %}

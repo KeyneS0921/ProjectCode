@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+{% load static %}
+{% load custom_tags %}
+
+{% block title %}{{ restaurant.name }} - Menu{% endblock %}
+{% block navbar_title %}{{ restaurant.name }}{% endblock %}
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/menu_customer.css' %}">
+{% endblock %}
+
+{% block content %}
+<h4 class="fw-bold">{{ restaurant.name }}</h4>
+<p class="text-muted">Table {{ table.table_number }} - Browse and add your items. Your order will begin in the cart.</p>
+
+<!-- Category Tabs -->
+<div class="d-flex overflow-auto mb-4">
+    {% for category in categories %}
+        <a href="#category{{ category.id }}" class="btn btn-outline-dark me-2">{{ category.name }}</a>
+    {% endfor %}
+</div>
+
+<!-- Menu Items -->
+{% for category in categories %}
+    <h5 id="category{{ category.id }}" class="fw-bold mt-4">{{ category.name }}</h5>
+    <div class="row g-4">
+        {% for item in category.menuitem_set.all %}
+        <div class="col-md-6">
+            <div class="card h-100">
+                <div class="row g-0">
+                    <div class="col-4">
+                        <img src="https://placehold.co/100x100" class="img-fluid rounded-start" alt="Dish Image">
+                    </div>
+                    <div class="col-8">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ item.name }}</h5>
+                            <p class="card-text text-muted small">{{ item.description }}</p>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <span class="fw-bold">${{ item.price }}</span>
+
+                                {% with qty=cart|get_item:item.id %}
+                                    {% if qty %}
+                                    <div class="d-flex align-items-center">
+                                        <form method="post" action="{% url 'decrease-item' table.id item.id %}" class="me-2">
+                                            {% csrf_token %}
+                                            <button type="submit" class="btn btn-outline-danger btn-sm">−</button>
+                                        </form>
+                                        <span class="fw-bold">{{ qty }}</span>
+                                        <form method="post" action="{% url 'place-order' table.id item.id %}" class="ms-2">
+                                            {% csrf_token %}
+                                            <button type="submit" class="btn btn-outline-success btn-sm">＋</button>
+
+                                        </form>
+                                    </div>
+                                    {% else %}
+                                    <form method="post" action="{% url 'place-order' table.id item.id %}">
+                                        {% csrf_token %}
+                                        <button type="submit" class="btn btn-outline-success btn-sm">＋</button>
+                                    </form>
+                                    {% endif %}
+                                {% endwith %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+{% endfor %}
+
+<!-- Footer Cart -->
+{% if cart and cart|length > 0 %}
+<footer class="footer-cart d-flex justify-content-between align-items-center px-4 py-2 bg-light border-top">
+    <div class="fw-bold fs-5">Items: {{ cart|length }}</div>
+    <a href="{% url 'view-cart' table.id %}" class="btn btn-success">Go to Cart ({{ cart|length }})</a>
+</footer>
+{% endif %}
+{% endblock %}

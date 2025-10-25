@@ -1,0 +1,17 @@
+/* cart.css - TableTap shopping cart page specific styles */
+
+/* Fixed footer cart for cart page checkout */
+.footer-cart {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background-color: #f3e5c5;
+    border-top: 1px solid #ccc;
+    z-index: 999;
+}
+
+/* Minimum width for the confirm button */
+.footer-cart .btn {
+    min-width: 150px;
+}

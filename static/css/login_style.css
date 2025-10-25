@@ -1,0 +1,17 @@
+/* login_style.css - TableTap login page specific styles */
+
+/* Center login form vertically and horizontally */
+body {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+}
+
+/* Login form container */
+.form-signin {
+    width: 100%;
+    max-width: 330px;
+    padding: 15px;
+    margin: auto;
+}
