@@ -30,7 +30,7 @@ services:
     environment:
       SECRET_KEY: django-insecure-docker-dev-key-change-in-production
       DEBUG: "False"
-      ALLOWED_HOSTS: localhost,127.0.0.1
+      ALLOWED_HOSTS: 34.151.143.16,localhost,127.0.0.1
       DB_ENGINE: postgresql
       DB_NAME: tabletap_db
       DB_USER: postgres
