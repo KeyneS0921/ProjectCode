@@ -203,38 +203,10 @@ docker service rollback tabletap_web
 5. Orders show up instantly in the merchant dashboard
 6. Admin can mark orders as completed in the dashboard
 
-## Cost Estimation
-
-**Monthly GCP Costs** (us-central1 region):
-- VM Instance (e2-medium): ~$24/month
-- External IP: ~$3/month
-- Storage (20GB): ~$1/month
-- Network Egress: ~$1/month
-- **Total: ~$28-30/month**
-
-## Development Roadmap
-
-- [x] Basic ordering functionality
-- [x] Merchant dashboard
-- [x] Docker containerization
-- [x] Docker Swarm orchestration
-- [x] GCP deployment
-- [ ] HTTPS/SSL support
-- [ ] Email notifications
-- [ ] Payment integration
-- [ ] Advanced analytics
-
 ## Usage of AI
 
 - **ChatGPT Free Vision**: Used to help debugging
 - **Sora AI**: Used to generate the TableTap logo (`logo.png`)
-- **Claude Code**: Used for cloud deployment configuration and documentation
-
-## Documentation
-
-- [PROPOSAL.md](PROPOSAL.md) - Project proposal (INFS3208 requirement)
-- [DEPLOYMENT.md](DEPLOYMENT.md) - Detailed deployment guide
-- [ARCHITECTURE.md](ARCHITECTURE.md) - System architecture documentation
 
 ## License
 
